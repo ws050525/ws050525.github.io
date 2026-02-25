@@ -1001,6 +1001,141 @@
                 display: none;
             }
         }
+            .full-page {
+                height: 100vh;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem 1.5rem;
+                position: relative;
+                background: rgba(255, 255, 255, 0.2);  /* 轻微背景，便于区分 */
+                backdrop-filter: blur(4px);
+                border-bottom: 1px solid rgba(255,255,255,0.3); /* 可去除 */
+            }
+
+            /* 内容卡片微调（确保原卡片样式不受影响） */
+            .full-page .birthday-card {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                /* 原卡片样式已足够，无需额外修改 */
+            }
+
+            /* ===== 新增：渐显动画 ===== */
+            .fade-up {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+
+            .active-screen .fade-up {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .delay-1 { transition-delay: 0.1s; }
+            .delay-2 { transition-delay: 0.2s; }
+            .delay-3 { transition-delay: 0.3s; }
+            .delay-4 { transition-delay: 0.4s; }
+            .delay-5 { transition-delay: 0.5s; }
+
+            /* 夜间模式下的全屏块背景微调（可选） */
+            body.night-mode .full-page {
+                background: rgba(20, 20, 40, 0.6);
+                backdrop-filter: blur(8px);
+            }
+            /* ===== 新增：夜间模式适配 - 忆往昔轮播 ===== */
+            body.night-mode .memory-description {
+                background: rgba(40, 40, 70, 0.9);
+                color: #f0e6d0;
+            }
+            body.night-mode .memory-description p {
+                color: #f0e6d0;
+            }
+            body.night-mode .memory-carousel {
+                background: #2a2a3a;  /* 照片留白时的背景色，与深色主题协调 */
+            }
+
+        /* ===== 忆往昔轮播样式 ===== */
+            .memory-carousel {
+                position: relative;
+                width: 100%;
+                max-width: 800px;
+                height: 600px;        /* 可根据需要调整，如 650px 或 700px */
+                margin: 0 auto;
+                overflow: hidden;
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                background: #f0f0f0;  /* 照片留白时的背景色 */
+            }
+
+            .memory-item {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                transition: opacity 0.8s ease;
+                pointer-events: none;
+            }
+
+            .memory-item.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* 图片区域：占满整个卡片 */
+            .memory-image {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;  /* 完整显示照片，可能留白；若希望铺满可改为 cover，但可能裁剪 */
+                display: block;
+                background-color: #f9f9f9; /* 留白区域背景色，与卡片背景协调 */
+            }
+
+            /* 描述悬浮层：位于底部，半透明背景 */
+            .memory-description {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 15px 20px;
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(5px);
+                border-radius: 0 0 20px 20px;
+                transform: translateY(0);
+                transition: transform 0.3s ease;
+            }
+
+            /* 描述文字样式 */
+            .memory-description h3 {
+                font-size: 1.6rem;
+                color: #b34b6b;
+                margin-bottom: 5px;
+            }
+
+            .memory-description p {
+                font-size: 1.1rem;
+                color: #666;
+                line-height: 1.5;
+            }
+
+            /* 描述文字渐显动画（复用原有的 .fade-up 机制） */
+            .memory-description .fade-up {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+
+            .memory-item.active .memory-description .fade-up {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* 延迟类复用已有的 .delay-1, .delay-2 等 */
     </style>
 </head>
 <body>
@@ -1012,89 +1147,108 @@
 
     <!-- 章节导航 -->
     <div class="section-nav" id="sectionNav">
-        <div class="nav-dot active" data-title="🍰 蛋糕" data-target="cake-area"></div>
-        <div class="nav-dot" data-title="🎈 气球祝福" data-target="balloon-container"></div>
-        <div class="nav-dot" data-title="📸 时光轴" data-target="timeline-container"></div>
-        <div class="nav-dot" data-title="🖼️ 幸福相册" data-target="photo-carousel-container"></div>
-        <div class="nav-dot" data-title="🎂 心形祝福" data-target="heart-popup-container"></div>
+        <div class="nav-dot active" data-title="🍰 蛋糕" data-target="page1"></div>
+        <div class="nav-dot" data-title="🎈 气球祝福" data-target="page2"></div>
+        <div class="nav-dot" data-title="📸 时光轴" data-target="page3"></div>
+        <div class="nav-dot" data-title="🖼️ 幸福相册" data-target="page4"></div>
+        <div class="nav-dot" data-title="🎂 心形祝福" data-target="page5"></div>
+        <div class="nav-dot" data-title="💝 生日忠告" data-target="page6"></div>
     </div>
 
-    <!-- 主内容区 -->
-    <div class="main-container">
-        <!-- 生日卡片 -->
-        <div class="birthday-card">
-            <div class="title-section" id="cake-area">
-                <div class="birthday-emoji-big">🥳🎈🎂</div>
-                <h1>HAPPY BIRTHDAY</h1>
-                <div class="sub-greeting">致 我亲爱的老Baby</div>
-            </div>
-
-            <!-- 蛋糕与祝福语区域 -->
-            <div class="cake-area">
-                <div class="cake-illustration">
-                    <span class="cake-emoji-big">🍰🧁🎂</span>
-                    <div class="candle-flame">✨🕯️✨</div>
+<!-- 新增：滚动主容器 -->
+    <main class="scroll-container" id="scrollContainer">
+        <!-- 屏幕1：蛋糕与标题 -->
+        <section class="full-page" id="page1">
+            <div class="birthday-card">   <!-- 复用原卡片类，样式保留 -->
+                <div class="title-section" id="cake-area">
+                    <div class="birthday-emoji-big fade-up">🥳🎈🎂</div>
+                    <h1 class="fade-up delay-1">HAPPY BIRTHDAY</h1>
+                    <div class="sub-greeting fade-up delay-2">致 我亲爱的老Baby</div>
+                </div>
+                <div class="cake-area fade-up delay-3">
+                    <div class="cake-illustration">
+                        <span class="cake-emoji-big">🍰🧁🎂</span>
+                        <div class="candle-flame">✨🕯️✨</div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- ===== 祝福气球专用容器 ===== -->
-            <div class="balloon-container" id="balloon-container">
-                <div class="balloon-header">🎈 点击气球 · 收集祝福 🎈</div>
-                
-                <div class="blessing-balloons" id="blessingBalloons">
-                    <!-- 气球将通过JS生成 -->
-                </div>
-                <div class="action-row">
-                    <button class="btn-birthday-link" id="startBalloonsBtn">
-                        <span>❤️</span> 已点燃全部气球 · 查看祝福 <span>❤️</span>
-                    </button>
-                    <div class="balloon-mini-group">🎈🎈🎈🎈🎈</div>
-                </div>
-            </div>
-
-            <!-- ===== 忆往昔 - 时间轴 ===== -->
-            <div class="timeline-container" id="timeline-container">
-                <div class="timeline-header">📸 忆往昔 · 时光长廊 🎞️</div>
-                <div class="timeline" id="timeline">
-                    <!-- 时间轴项将通过JS生成 -->
+        <!-- 屏幕2：祝福气球 -->
+        <section class="full-page" id="page2">
+            <div class="birthday-card">
+                <div class="balloon-container" id="balloon-container">
+                    <div class="balloon-header fade-up">🎈 点击气球 · 收集祝福 🎈</div>
+                    <div class="blessing-balloons fade-up delay-1" id="blessingBalloons"></div>
+                    <div class="action-row fade-up delay-2">
+                        <button class="btn-birthday-link" id="startBalloonsBtn">
+                            <span>❤️</span> 已点燃全部气球 · 查看祝福 <span>❤️</span>
+                        </button>
+                        <div class="balloon-mini-group">🎈🎈🎈🎈🎈</div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- ===== 轮播照片展示区 ===== -->
-            <div class="photo-carousel-container" id="photo-carousel-container">
-                <div class="carousel-header">📸 幸福瞬间 · 轮播相册 📸</div>
-                <div class="photo-carousel" id="photoCarousel">
-                    <!-- 照片将通过JS动态插入 -->
-                </div>
-                <div class="carousel-controls">
-                    <button class="prev-btn" id="prevPhotoBtn">❮ 上一张</button>
-                    <button class="next-btn" id="nextPhotoBtn">下一张 ❯</button>
+        <!-- 屏幕3：忆往昔 · 时光轮盘（照片+描述） -->
+        <section class="full-page" id="page3">
+            <div class="birthday-card">
+                <div class="carousel-header fade-up">📸 忆往昔 · 时光轮盘 🎞️</div>
+                <div class="memory-carousel-container fade-up delay-1">
+                    <div class="memory-carousel" id="memoryCarousel">
+                        <!-- 由JS动态生成每个时期的卡片 -->
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="prev-btn" id="prevMemoryBtn">❮ 上一时期</button>
+                        <button class="next-btn" id="nextMemoryBtn">下一时期 ❯</button>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <!-- ===== 祝福心形弹窗容器 ===== -->
-            <div class="heart-popup-container" id="heart-popup-container">
-                <div class="heart-popup-header">🎂 点击蛋糕 · 心形祝福 🎂</div>
-                <button class="cake-trigger-btn" id="cakeTriggerBtn">🎂</button>
+        <!-- 屏幕4：幸福相册轮播 -->
+        <section class="full-page" id="page4">
+            <div class="birthday-card">
+                <div class="photo-carousel-container" id="photo-carousel-container">
+                    <div class="carousel-header fade-up">📸 幸福瞬间 · 轮播相册 📸</div>
+                    <div class="photo-carousel fade-up delay-1" id="photoCarousel"></div>
+                    <div class="carousel-controls fade-up delay-2">
+                        <button class="prev-btn" id="prevPhotoBtn">❮ 上一张</button>
+                        <button class="next-btn" id="nextPhotoBtn">下一张 ❯</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- 底部忠告栏 -->
-    <div class="bottom-advice-bar">
-        <div class="advice-block">
-            <div class="advice-title">🎂 生日祈愿</div>
-            <div class="advice-content">拒绝烦恼，保持开心</div>
-        </div>
-        <div class="advice-block">
-            <div class="advice-title">✨ 特别提醒</div>
-            <div class="advice-content">记得吃蛋糕，许心愿</div>
-        </div>
-        <div class="advice-block">
-            <div class="advice-title">💝 祝福</div>
-            <div class="advice-content">被爱包围，闪闪发光</div>
-        </div>
-    </div>
+        <!-- 屏幕5：心形祝福 -->
+        <section class="full-page" id="page5">
+            <div class="birthday-card">
+                <div class="heart-popup-container" id="heart-popup-container">
+                    <div class="heart-popup-header fade-up">🎂 点击蛋糕 · 心形祝福 🎂</div>
+                    <button class="cake-trigger-btn fade-up delay-1" id="cakeTriggerBtn">🎂</button>
+                </div>
+            </div>
+        </section>
+         <!-- 屏幕6：底部忠告栏 -->
+        <section class="full-page" id="page6">
+            <div class="birthday-card" style="background: transparent; box-shadow: none; backdrop-filter: none; border: none;">
+                <div class="bottom-advice-bar" style="position: relative; border: none; background: transparent; box-shadow: none;">
+                    <div class="advice-block">
+                        <div class="advice-title">🎂 生日祈愿</div>
+                        <div class="advice-content">拒绝烦恼，保持开心</div>
+                    </div>
+                    <div class="advice-block">
+                        <div class="advice-title">✨ 特别提醒</div>
+                        <div class="advice-content">记得吃蛋糕，许心愿</div>
+                    </div>
+                    <div class="advice-block">
+                        <div class="advice-title">💝 祝福</div>
+                        <div class="advice-content">被爱包围，闪闪发光</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- 本地BGM部分 -->
     <audio id="bgmAudio" loop preload="auto">
@@ -1184,6 +1338,7 @@
         let currentPhotoIndex = 0;
         let isHeartAnimationRunning = false;
         let autoPlayInterval = null;
+        let typingInterval = null; // 用于控制祝福文字的逐字输出
 
         // === 轮播照片功能 ===
         function createPhotoCarousel() {
@@ -1243,11 +1398,31 @@
                 shuffledBlessings = shuffleArray(BLESSINGS);
                 currentIndex = 0;
             }
-            document.getElementById('blessingText').textContent = shuffledBlessings[currentIndex];
+            const fullText = shuffledBlessings[currentIndex];
+            const blessingEl = document.getElementById('blessingText');
             const popup = document.getElementById('blessingMessage');
-            if (popup) {
-                popup.style.display = 'block';
+            
+            // 清除之前正在进行的打字效果
+            if (typingInterval) {
+                clearInterval(typingInterval);
+                typingInterval = null;
             }
+            
+            // 清空文本并显示弹窗
+            blessingEl.textContent = '';
+            popup.style.display = 'block';
+            
+            let i = 0;
+            typingInterval = setInterval(() => {
+                if (i < fullText.length) {
+                    blessingEl.textContent += fullText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    typingInterval = null;
+                }
+            }, 150); // 每50毫秒输出一个字，可自行调整速度（数值越小越快）
+            
             currentIndex++;
         }
 
@@ -1362,44 +1537,6 @@
             }
             showNextBox();
         }
-
-        // === 章节导航初始化 ===
-        function initSectionNav() {
-            const dots = document.querySelectorAll('.nav-dot');
-            const sections = ['cake-area', 'balloon-container', 'timeline-container', 'photo-carousel-container', 'heart-popup-container'];
-            
-            function updateActiveDot() {
-                let index = -1;
-                for (let i = 0; i < sections.length; i++) {
-                    const el = document.getElementById(sections[i]);
-                    if (el) {
-                        const rect = el.getBoundingClientRect();
-                        if (rect.top <= 200 && rect.bottom >= 200) {
-                            index = i;
-                            break;
-                        }
-                    }
-                }
-                dots.forEach((d, i) => {
-                    if (i === index) d.classList.add('active');
-                    else d.classList.remove('active');
-                });
-            }
-            
-            window.addEventListener('scroll', updateActiveDot);
-            
-            dots.forEach((dot, i) => {
-                dot.addEventListener('click', () => {
-                    const target = document.getElementById(sections[i]);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                });
-            });
-            
-            updateActiveDot();
-        }
-
         // === 增强版烟花效果 ===
         let nightMode = false;
         const modeBtn = document.getElementById('modeToggleBtn');
@@ -1553,18 +1690,70 @@
         document.addEventListener('DOMContentLoaded', function() {
             // 生成初始气球
             createBalloons();
-            // 生成时间轴
-            createTimeline();
+
             // 创建照片轮播
             createPhotoCarousel();
-            // 初始化章节导航
-            initSectionNav();
+
+            // ===== 忆往昔轮播功能 =====
+            let currentMemoryIndex = 0; // 添加一个全局变量，可在开头与 currentPhotoIndex 一起定义
+
+            function createMemoryCarousel() {
+                const container = document.getElementById('memoryCarousel');
+                if (!container) return;
+                container.innerHTML = '';
+                TIME_LINE_ITEMS.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'memory-item';
+                    if (index === 0) div.classList.add('active');
+
+                    // 图片
+                    const img = document.createElement('img');
+                    img.src = item.image;
+                    img.alt = item.title;
+                    img.className = 'memory-image';
+
+                    // 描述区域
+                    const descDiv = document.createElement('div');
+                    descDiv.className = 'memory-description';
+
+                    const title = document.createElement('h3');
+                    title.className = 'fade-up delay-1';
+                    title.innerText = item.title;
+
+                    const description = document.createElement('p');
+                    description.className = 'fade-up delay-2';
+                    description.innerText = item.description;
+
+                    descDiv.appendChild(title);
+                    descDiv.appendChild(description);
+                    div.appendChild(img);
+                    div.appendChild(descDiv);
+                    container.appendChild(div);
+                });
+            }
+
+            function changeMemory(index) {
+                const items = document.querySelectorAll('.memory-item');
+                if (items.length === 0) return;
+                index = (index + items.length) % items.length;
+                items[currentMemoryIndex].classList.remove('active');
+                currentMemoryIndex = index;
+                items[currentMemoryIndex].classList.add('active');
+                // 由于描述文字通过 .active 触发渐显，切换后会自动淡入，无需额外操作
+            }
+
+            // 在 DOMContentLoaded 内调用 createMemoryCarousel()
+            createMemoryCarousel();
+
+            // 绑定按钮事件
+            document.getElementById('prevMemoryBtn')?.addEventListener('click', () => changeMemory(currentMemoryIndex - 1));
+            document.getElementById('nextMemoryBtn')?.addEventListener('click', () => changeMemory(currentMemoryIndex + 1));
 
             // 彩纸屑初始化
             const confettiContainer = document.getElementById('confettiContainer');
             if (confettiContainer) {
                 const colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#f9c7e8', '#e0b3ff', '#ff9f9f', '#feca57', '#ff6b6b'];
-                for (let i = 0; i < 150; i++) {
+                for (let i = 0; i < 50; i++) {
                     const piece = document.createElement('div');
                     piece.classList.add('confetti-piece');
                     const size = Math.floor(Math.random() * 20 + 20);
@@ -1617,6 +1806,10 @@
             const closeBlessing = document.getElementById('closeMessage');
             if (closeBlessing) {
                 closeBlessing.addEventListener('click', () => {
+                    if (typingInterval) {
+                        clearInterval(typingInterval);
+                        typingInterval = null;
+                    }
                     document.getElementById('blessingMessage').style.display = 'none';
                 });
             }
@@ -1668,6 +1861,78 @@
                     tooltip.innerText = '🎶 正在播放';
                 });
             }
+            // ===== 屏幕内文字渐显控制（每个屏幕首次进入时触发一次） =====
+            const sections = document.querySelectorAll('.full-page');
+            const textObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // 当屏幕进入视口，添加 active-screen 类（触发内部文字的渐显动画）
+                        entry.target.classList.add('active-screen');
+                        // 更新右侧导航点激活状态
+                        const targetId = entry.target.getAttribute('id');
+                        document.querySelectorAll('.nav-dot').forEach(dot => {
+                            dot.classList.remove('active');
+                            if (dot.dataset.target === targetId) {
+                                dot.classList.add('active');
+                            }
+                        });
+                        // 注意：我们不再移除 active-screen，因此每个屏幕的动画只发生一次
+                    }
+                });
+            }, { threshold: 0.5 }); // 当屏幕 50% 可见时触发
+
+            sections.forEach(section => textObserver.observe(section));
+
+            // ===== 滚动透明度控制：让每个屏幕根据在视口中的比例改变透明度 =====
+            const pages = document.querySelectorAll('.full-page');
+            const viewportHeight = window.innerHeight;
+
+            function updateOpacity() {
+                const scrollY = window.scrollY;
+                pages.forEach(page => {
+                    const rect = page.getBoundingClientRect();
+                    const pageTop = rect.top + scrollY;   // 页面顶部相对于文档顶部的距离
+                    const pageBottom = pageTop + rect.height;
+
+                    // 计算当前屏幕在视口中的可见高度
+                    const visibleTop = Math.max(scrollY, pageTop);
+                    const visibleBottom = Math.min(scrollY + viewportHeight, pageBottom);
+                    const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+                    const visibleRatio = visibleHeight / rect.height; // 0 ~ 1
+
+                    // 透明度直接等于可见比例（线性变化，平滑自然）
+                    page.style.opacity = visibleRatio;
+                });
+            }
+
+            // 使用 requestAnimationFrame 优化滚动性能
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateOpacity();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // 窗口大小改变时重新计算
+            window.addEventListener('resize', updateOpacity);
+
+            // 初始化透明度
+            updateOpacity();
+
+            // 为右侧导航点添加点击滚动事件（替代原来的）
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const targetId = dot.dataset.target;
+                    const targetSection = document.getElementById(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
         });
     </script>
 </body>
