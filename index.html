@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         /* ===== 重置 & 基础 ===== */
         * {
             margin: 0;
@@ -22,6 +22,11 @@
             flex-direction: column;
             position: relative;
             overflow-x: hidden;
+        }
+        /* 所有图片最大宽度限制 */
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         /* ----- 顶部提示条 ----- */
@@ -359,6 +364,8 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px 0;
+            /* 清除浮动 */
+            overflow: hidden;
         }
 
         .timeline::before {
@@ -439,7 +446,7 @@
         }
 
         .timeline-image {
-            width: 115%;
+            width: 100%;          /* 从115%改为100%，防止溢出 */
             height: 500px;
             background-size: cover;
             background-position: center;
@@ -450,39 +457,24 @@
 
        /* ===== 轮播照片容器整体样式 ===== */
         .photo-carousel-container {
-            /* 淡粉色半透明背景 */
             background: rgba(255, 245, 250, 0.7);
-            /* 圆角边框 */
             border-radius: 30px;
-            /* 内边距 */
             padding: 30px;
-            /* 上下外边距 */
             margin: 30px 0;
-            /* 阴影效果 */
             box-shadow: 0 10px 25px rgba(247, 120, 160, 0.2);
-            /* 粉色虚线边框 */
             border: 2px dashed #f76b9c;
-            /* 相对定位 */
             position: relative;
-            /* 隐藏溢出内容 */
             overflow: hidden;
-            /* 文字居中对齐 */
             text-align: center;
         }
 
-        /* 轮播头部标题样式 */
         .carousel-header {
-            /* 字体大小 */
             font-size: 1.8rem;
-            /* 深粉色文字颜色 */
             color: #b34b6b;
-            /* 粗体 */
             font-weight: 700;
-            /* 下外边距 */
             margin-bottom: 20px;
         }
 
-        /* 轮播主容器 - 修复 */
         .photo-carousel {
             position: relative;
             width: 100%;
@@ -494,7 +486,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
 
-        /* 照片项 */
         .photo-item {
             position: absolute;
             top: 0;
@@ -511,7 +502,6 @@
             pointer-events: auto;
         }
 
-        /* 照片样式 */
         .photo-carousel img {
             width: 100%;
             height: calc(100% - 30px);
@@ -519,28 +509,26 @@
             display: block;
         }
 
-        /* 照片标题样式 */
         .photo-title {
-        position: absolute;
-        bottom: 20px;  /* 从10px增加到20px，稍微抬高一点 */
-        left: 50%;  /* 改为50%实现水平居中 */
-        transform: translateX(-50%);  /* 水平居中偏移 */
-        background: linear-gradient(135deg, #ff9eb5, #ff6b9d); /* 渐变背景 */
-        color: white;  /* 文字颜色改为白色 */
-        font-size: 24px;  /* 从18px增大到24px */
-        font-weight: 700;  /* 加粗 */
-        font-family: 'Quicksand', '微软雅黑', sans-serif;
-        padding: 12px 30px;  /* 增大内边距 */
-        border-radius: 50px;  /* 更圆的角 */
-        letter-spacing: 1px;  /* 增加字间距 */
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);  /* 文字阴影 */
-        box-shadow: 0 4px 15px rgba(247, 120, 160, 0.4);  /* 添加阴影 */
-        border: 2px solid white;  /* 白色边框 */
-        z-index: 10;
-        white-space: nowrap;  /* 防止文字换行 */
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff9eb5, #ff6b9d);
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Quicksand', '微软雅黑', sans-serif;
+            padding: 12px 30px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(247, 120, 160, 0.4);
+            border: 2px solid white;
+            z-index: 10;
+            white-space: nowrap;
         }
 
-        /* 控制按钮样式 */
         .carousel-controls {
             text-align: center;
             margin-top: 20px;
@@ -710,18 +698,17 @@
             background-color: #ffb3c6;
             opacity: 0.7;
             border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: fallDown 8s infinite linear; /* 改为fallDown动画，时间缩短 */
+            animation: fallDown 8s infinite linear;
             box-shadow: 0 0 10px rgba(255, 180, 200, 0.5);
         }
 
-        /* 从上至下的动画 */
         @keyframes fallDown {
             0% { 
-                transform: translateY(-20vh) rotate(0deg); /* 从上方开始 */
+                transform: translateY(-20vh) rotate(0deg);
                 opacity: 0.8; 
             }
             100% { 
-                transform: translateY(120vh) rotate(720deg); /* 落到下方，旋转更多圈 */
+                transform: translateY(120vh) rotate(720deg);
                 opacity: 0; 
             }
         }
@@ -771,7 +758,33 @@
             pointer-events: none;
         }
 
-        /* 响应式 */
+        /* ===== 新增：心形祝福框样式 ===== */
+        .heart-blessing-box {
+            position: absolute;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Quicksand', '微软雅黑', sans-serif;
+            font-size: clamp(14px, 4vw, 18px);  /* 响应式字体 */
+            font-weight: 600;
+            color: #333;
+            padding: 10px;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+            z-index: 10000;
+            border: 2px solid rgba(255,255,255,0.8);
+            backdrop-filter: blur(2px);
+            width: min(180px, 40vw);   /* 小屏幕时自动缩小 */
+            height: min(80px, 18vw);
+        }
+
+        /* ========== 移动端精细优化 ========== */
         @media (max-width: 700px) {
             .birthday-card {
                 padding: 30px 20px;
@@ -779,7 +792,7 @@
             h1 {
                 font-size: 2.5rem;
             }
-            .action-buttons {
+            .action-row {
                 flex-direction: column;
                 width: 100%;
             }
@@ -807,34 +820,64 @@
                 height: 60px;
                 line-height: 60px;
             }
-            
             .photo-carousel {
                 height: 300px;
             }
+            /* 新增小屏幕优化 */
+            .photo-title {
+                font-size: 18px;
+                padding: 8px 16px;
+                white-space: normal;      /* 允许换行 */
+                width: auto;
+                max-width: 90%;
+            }
+            .balloon-container {
+                padding: 20px 15px;
+            }
+            .btn-birthday-link {
+                font-size: 1.3rem;
+                padding: 14px 22px;
+                gap: 10px;
+            }
+            .bottom-advice-bar {
+                gap: 15px;
+                padding: 20px 10px;
+            }
+            .advice-block {
+                min-width: 120px;
+                padding: 10px 15px;
+            }
         }
 
-        /* ===== 新增：心形祝福框样式 ===== */
-        .heart-blessing-box {
-            position: absolute;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: 'Quicksand', '微软雅黑', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            padding: 10px;
-            box-sizing: border-box;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            pointer-events: none;
-            z-index: 10000;
-            border: 2px solid rgba(255,255,255,0.8);
-            backdrop-filter: blur(2px);
+        @media (max-width: 500px) {
+            .timeline-item {
+                margin-left: 40px;
+                width: calc(100% - 50px);
+            }
+            .timeline-item:nth-child(odd) .timeline-date,
+            .timeline-item:nth-child(even) .timeline-date {
+                left: -20px;
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                font-size: 1rem;
+            }
+            .timeline-image {
+                height: 300px;
+            }
+            .photo-carousel {
+                height: 250px;
+            }
+            .carousel-header {
+                font-size: 1.5rem;
+            }
+            .balloon-header {
+                font-size: 1.4rem;
+            }
+            .btn-birthday-link {
+                font-size: 1.2rem;
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
